@@ -39,7 +39,6 @@ public class Game extends ApplicationAdapter {
 		
 		
 		batch.setProjectionMatrix(camera.combined);
-		//System.out.println("In");
 		batch.begin();
 		
 		
@@ -56,7 +55,7 @@ public class Game extends ApplicationAdapter {
 		ui.drawUi(batch, player);
 		batch.end();
 		map.moveObstacle();
-		player.move(map);
+		player.move(map); 
 	}
 	
 	@Override
