@@ -42,7 +42,7 @@ public class Map {
 		listOfWall = new ArrayList<Wall>();
 		//As paredes que ficam dentro do JawBreaker possui 574px de largura e 7px de altura. Além disso, são 8 paredes
 		for (int i = 0; i < 8; i++) {  
-			Wall wall = new Wall(63 , 69 + 60*i,585,7); //É o mesmo calculo para 
+			Wall wall = new Wall(63 , 69 + 60*i,574,7); //É o mesmo calculo para 
 			listOfWall.add(wall); //Esses valores representam a posição da parede. 63 é fixo pois todas as paredes iniciam nessa posição. A outra expressão é pq cada parede está a 60 de distância uma da outra e a primeira está na posição 69, ou seja, deve incrementar 69 + 60 * i (até 7).
 		}
 	}
@@ -134,9 +134,9 @@ public class Map {
 	//Coins
 	public void createCoins() {
 		listOfCoins = new ArrayList<Coin>();
-		for (int indexOfObstacle = 0; indexOfObstacle < 9; indexOfObstacle++) { //Quantidade de locais que devem receber moedas
+		for (int indexOfWall = 0; indexOfWall < 9; indexOfWall++) { //Quantidade de locais que devem receber moedas
 			for (int i = 0; i < 20; i++) { //Dentro do JawBreaker há 9 fileiras com moedas, sendo que cada fileira possui 15 moedas
-				Coin coin = new Coin(63 + 30 * i ,50 + 60 * indexOfObstacle,10); //Esses valores representam a posição da moeda. A posição X é sempre 63
+				Coin coin = new Coin(63 + 30 * i ,50 + 60 * indexOfWall,10); //Esses valores representam a posição da moeda. A posição X é sempre 63
 															 //(posição original das paredes) + 15 (distancia de cada coin) * i.
 															// A posição Y é sempre 45 + 60 (distancia entre paredes) * index do obstaculo (Assim, sempre terá 15 moedas para cada parede). E por fim há o valor de cada moeda
 				listOfCoins.add(coin);
