@@ -6,18 +6,17 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 public class Player extends Characters implements InputProcessor {
+	
+	public boolean canDestroyEnemy = false;
+	
+	
 	private Texture idleAnimationHorizontal; //Responsavel por pegar separadamente cada animação do player (cima,baixo e horizontal)
 	private Texture idleAnimationUp;
 	private Texture idleAnimationDown;
@@ -26,15 +25,20 @@ public class Player extends Characters implements InputProcessor {
 	private float stateTime; //Tempo para iniciar a animação
 	private String sense; 
 	private int points;
-	private int levelPlayer;
 	private int life;
+	private Sound collectSound;
+	private Sound damageSound;
 	
-	public Player(int newX, int newY,double newSpeed, int newLife, int newLevel) {
+	
+	private int timeForEndItem = 300;
+	private int currentTime;
+	public Player(int newX, int newY,double newSpeed, int newLife) {
 		super(newX,newY,32,32,newSpeed);
 		idleAnimationHorizontal = new Texture(Gdx.files.internal("PlayerHorizontal.png")); //Pega as texturas
 		idleAnimationUp = new Texture(Gdx.files.internal("PlayerUp.png"));
 		idleAnimationDown = new Texture(Gdx.files.internal("PlayerDown.png"));
-
+		collectSound = Gdx.audio.newSound(Gdx.files.internal("collect.mp3"));
+		damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
 
 
 
@@ -44,13 +48,12 @@ public class Player extends Characters implements InputProcessor {
 		stateTime = 0;
 
 
-		
+		Gdx.input.setInputProcessor(this);
 
 		
 		Gdx.input.setInputProcessor(this);
 		points = 0;
 		life = newLife;
-		levelPlayer = newLevel;
 		
 	}
 	public TextureRegion[] createIdleFrames(Texture texture) {
@@ -120,6 +123,17 @@ public class Player extends Characters implements InputProcessor {
 		
 		//Testar colisao com as coins
 		testCollisionCoin(collision, map);
+		
+		//Tempo para o poder do item acabar
+		if(canDestroyEnemy) {
+			currentTime++;
+			if(currentTime == timeForEndItem) {
+				currentTime = 0;
+				canDestroyEnemy = false;
+			}
+		}else {
+			currentTime = 0;
+		}
 
 	}
 	public void testCollisionCoin(Rectangle character, Map map) {
@@ -127,7 +141,7 @@ public class Player extends Characters implements InputProcessor {
 		
 		for (Coin coin : map.getListOfCoin()) { //Caso algum personagem do game bata parede ele não pode atravessar a parede
 			if(character.overlaps(coin.getCollision())) {
-				
+				collectSound.play();
 				points+= coin.getValue();
 				listOfCoinsCollected.add(coin);
 			}
@@ -142,6 +156,28 @@ public class Player extends Characters implements InputProcessor {
 		
 		
 	}
+	
+	public void callColisionEnemy(Game game) {
+		for(Enemy enemy:game.getListEnemy()) {
+			
+			if(testCollisionSolidCharacter(collision,enemy.getCollision())) {
+				if(!canDestroyEnemy) { 
+					life--;
+					x=350;
+					y=290;
+					sense="";
+					damageSound.play();
+				}else {
+					enemy.dead = true; //Caso o player esteja com o poder ele pode colidir com os inimigos e  mata-los
+				}
+
+			}
+		}
+	}
+	
+	
+	
+	
 	public void drawPlayer(SpriteBatch batch) {
 		stateTime += Gdx.graphics.getDeltaTime(); //O tempo deve ser atualizado a todo loop, pois assim é possível pegar o frame exato para a animação ocorrer
 		TextureRegion currentFrame = idleAnimation.getKeyFrame(stateTime,true);  //pega o frame exato da animação
@@ -149,9 +185,7 @@ public class Player extends Characters implements InputProcessor {
 		
 
 	}
-	public int getLevel(){
-		return levelPlayer;
-	}
+
 	public int getLife(){
 		return life;
 	}

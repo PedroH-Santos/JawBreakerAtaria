@@ -9,17 +9,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Ui {
 	private int pointsOfPlayer;
-	private int levelOfPlayer;
 	private int lifeOfPlayer;
+	private int levelOfPlayer;
 	
 	private Texture textureOfLife;
 	private Sprite spriteOfLife;
 	
-	public Ui(Player player ) {
+	public Ui(Player player, Game game) {
 		pointsOfPlayer = player.getPoints();
-		levelOfPlayer = player.getLevel();
 		lifeOfPlayer = player.getLife();
-		
+		levelOfPlayer = game.currentLevelPlayer;
 		textureOfLife = new Texture(Gdx.files.internal("Life.png"));
 		spriteOfLife = new Sprite(textureOfLife,0,0,16,16);
 	}
@@ -28,7 +27,6 @@ public class Ui {
 		BitmapFont font = new BitmapFont();
 		//Atualizando os valores do player
 		pointsOfPlayer = player.getPoints();
-		levelOfPlayer = player.getLevel();
 		lifeOfPlayer = player.getLife();
 		//Points
 		font.setColor(Color.YELLOW);

@@ -21,7 +21,6 @@ public class Map {
 	private List<Coin> listOfCoins; //Lista de moedas do jogo
 	private List<Wall> listOfWall; //Lista das paredes do jogo
 	
-	
 	private Random random; //Objeto utilizada para tirar um numero aleatorio
 	public Map(int  newLimitOfSpeedOfObstacle) {
 		textureOfMap = new Texture(Gdx.files.internal("Map.png"));
@@ -36,6 +35,9 @@ public class Map {
 		return mapSprite;
 	}
 	
+	
+	
+	
 	//Wall
 	
 	public void createWall() {
@@ -49,6 +51,10 @@ public class Map {
 	public List<Wall> getListOfWall(){
 		return listOfWall;
 	}
+	
+	
+	
+	
 	
 	//Obstacles
 	
@@ -66,9 +72,6 @@ public class Map {
 		
 	}
 	public void drawObstacle(SpriteBatch batch, int offset) {
-
-	
-		
 		for (Obstacle obstacle : listOfObstacle) {
 		
 			batch.draw(obstacle.getSprite(), obstacle.getX(), obstacle.getY() ); //É necessário incremetar o offset realizado no mapa par que a posição dos obstaculos calculada anteriormente consiga se relacionar com as posições do mapa. Além disso, é necessário incrementar + 33 posições para que os obstaculos fiquem na posição exata da parede.
@@ -76,52 +79,7 @@ public class Map {
 		
 	
 	}
-	
-	
-	//Essas três funções apenas são para testar as colisões
-	/*public void drawRectagleObstacle(SpriteBatch batch) {
-		batch.end();
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeType.Filled);
-        for (Obstacle obstacle : listOfObstacle) {
-            
-           shapeRenderer.setColor(Color.RED);
-           shapeRenderer.rect(obstacle.getX(), obstacle.getY(), obstacle.collision.width, obstacle.collision.height);
 
-		}
-        shapeRenderer.end();
-        batch.begin();
-	}
-	public void drawRectagleWall(SpriteBatch batch) {
-		batch.end();
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeType.Filled);
-        for (Wall wall : listOfWall) {
-            
-           shapeRenderer.setColor(Color.WHITE);
-           shapeRenderer.rect(wall.getX(), wall.getY(), wall.getCollision().width, wall.getCollision().height);
-
-		}
-        shapeRenderer.end();
-        batch.begin();
-	}
-	public void drawRectagleCoins(SpriteBatch batch) {
-
-		batch.end();
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeType.Filled);
-        for (Coin coin : listOfCoins) {
-            
-           shapeRenderer.setColor(Color.WHITE);
-           shapeRenderer.rect(coin.getCollision().x, coin.getCollision().y, coin.getCollision().width, coin.getCollision().height);
-
-		}
-        shapeRenderer.end();
-        batch.begin();
-	}*/
-	
-	
-	
 	public void moveObstacle() {
 		for (Obstacle obstacle : listOfObstacle) {
 			obstacle.move();
@@ -130,6 +88,9 @@ public class Map {
 	public List<Obstacle> getListOfObstacle(){
 		return listOfObstacle;
 	}
+	
+	
+	
 	
 	//Coins
 	public void createCoins() {
@@ -157,6 +118,9 @@ public class Map {
 	public List<Coin> getListOfCoin(){
 		return listOfCoins;
 	}
+	
+	
+
 	
 
 }
