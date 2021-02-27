@@ -34,7 +34,7 @@ public class Characters {
 		y = value;
 	}
 	//colisão com os inimigos
-	public boolean testCollisionWithEnemy(Rectangle firstCharacter, Rectangle secondCharacter) { //Função que testa se um character está colidindo com outro
+	public boolean testCollisionSolidCharacter(Rectangle firstCharacter, Rectangle secondCharacter) { //Função que testa se um character está colidindo com outro
 		
 		if(firstCharacter.overlaps(secondCharacter)) {
 			return true;
